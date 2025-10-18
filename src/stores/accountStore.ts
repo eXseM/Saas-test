@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Account, AccountLabel } from '@/types/account';
+import type { Account, AccountLabel } from '../types/account';
 
 export const useAccountStore = defineStore('account', () => {
   const accounts = ref<Account[]>([]);
@@ -9,6 +9,7 @@ export const useAccountStore = defineStore('account', () => {
     const newAccount: Account = {
       id: Date.now().toString(),
       labels: [],
+      labelsRaw: '',
       recordType: 'local',
       login: '',
       password: '',
@@ -45,7 +46,6 @@ export const useAccountStore = defineStore('account', () => {
       }
     }
 
-    // Создаем новый объект для реактивности
     const updatedAccount = { ...account, errors };
     updateAccount(updatedAccount);
 
@@ -61,8 +61,21 @@ export const useAccountStore = defineStore('account', () => {
       .map(label => ({ text: label }));
   };
 
+  const updateLabels = (account: Account, labelsString: string) => {
+    const updated = {
+      ...account,
+      labelsRaw: labelsString,
+      labels: parseLabels(labelsString)
+    };
+    updateAccount(updated);
+  };
+
+  const getLabelsRaw = (account: Account): string => {
+    return account.labelsRaw || formatLabels(account.labels);
+  };
+
   const formatLabels = (labels: AccountLabel[]): string => {
-    return labels.map(label => label.text).join('; ');
+    return labels.map(label => label.text).join(';');
   };
 
   return {
@@ -72,6 +85,8 @@ export const useAccountStore = defineStore('account', () => {
     updateAccount,
     validateAccount,
     parseLabels,
+    updateLabels,
+    getLabelsRaw,
     formatLabels
   };
 }, {

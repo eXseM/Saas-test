@@ -13,7 +13,6 @@ import AccountForm from '@/components/AccountForm.vue';
 </template>
 
 <style lang="scss">
-
 .v-application {
   background-color: #121212;
 }
@@ -21,5 +20,4 @@ import AccountForm from '@/components/AccountForm.vue';
 .v-card {
   background: #1e1e1e;
 }
-
 </style>

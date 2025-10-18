@@ -5,6 +5,7 @@ export interface AccountLabel {
 export interface Account {
   id: string;
   labels: AccountLabel[];
+  labelsRaw: string;
   recordType: 'local' | 'ldap';
   login: string;
   password: string | null;
